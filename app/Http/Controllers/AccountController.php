@@ -4,16 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAccountRequest;
 use App\Http\Requests\UpdateAccountRequest;
+use App\Http\Resources\AccountCollection;
+use App\Http\Resources\AccountResource;
 use App\Models\Account;
+use Illuminate\Http\Request;
 
 class AccountController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): AccountCollection
     {
-        //
+        $accounts = Account::all();
+        return AccountCollection::make($accounts);
+
     }
 
     /**
@@ -27,17 +32,24 @@ class AccountController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreAccountRequest $request)
+    public function store(StoreAccountRequest $request): AccountResource
     {
-        //
+        $validated = $request->validated();
+
+        $account = Account::create([
+            'account_number' => $validated['account_number'],
+            'balance' => $validated['balance']
+        ]);
+
+        return AccountResource::make($account);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Account $account)
+    public function show(Account $account): AccountResource
     {
-        //
+        return AccountResource::make($account);
     }
 
     /**

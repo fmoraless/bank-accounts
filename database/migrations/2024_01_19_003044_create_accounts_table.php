@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
+            $table->string('account_number')->unique();
+            $table->decimal('balance', 8, 2)->nullable();
             $table->timestamps();
         });
     }

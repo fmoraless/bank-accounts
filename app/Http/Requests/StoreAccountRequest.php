@@ -11,7 +11,7 @@ class StoreAccountRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,25 @@ class StoreAccountRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'account_number' => [
+                'required',
+                'unique:accounts,account_number',
+                'string'
+            ],
+            'balance' => 'string'
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'account_number.required' => 'Account number is required',
+            'balance.numeric' => 'Balance must be a number'
         ];
     }
 }
